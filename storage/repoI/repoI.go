@@ -6,11 +6,12 @@ import (
 )
 
 type UserRepoI interface {
+	Login(ctx context.Context, username string) (models.User, error)
 	CreateUser(ctx context.Context, user models.User) error
-	GetUsers(ctx context.Context, limit, page string) ([]models.User, error)
-	GetUserById(ctx context.Context, userId string) (*models.User, error)
-	UpdateUser(ctx context.Context, user models.User) error
-	DeleteUserById(ctx context.Context, userId string) error
+	GetUsers(ctx context.Context) ([]models.User, error)
+	GetUserByUsername(ctx context.Context, username string) (*models.User, error)
+	UpdateUser(ctx context.Context, username string, user models.User) error
+	DeleteUserByUsername(ctx context.Context, username string) error
 }
 
 type TodoRepoI interface {
