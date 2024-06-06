@@ -20,17 +20,32 @@ func (h *Handlers) Login() {
 	fmt.Print("Enter Password:")
 	fmt.Scanln(&password)
 
-	user, err := h.storage.GetUserRepo().Login(ctx, username)
+	user, err := h.storage.GetUserRepo().GetUserByUsername(ctx, username)
+	fmt.Println(user.Password, user.Username)
 	if err != nil {
-		log.Println("Error user:",err)
+		log.Println("Error fetching user:", err)
 		return
 	}
-	if password==user.Password {
-		UserToken.UserId=user.UserID.String()
-		UserToken.Username=user.Username
-		fmt.Println("You are Loged in")
+
+	// if user == nil {
+	//     log.Println("User not found")
+	//     return
+	// }
+
+	fmt.Println(user.UserID.String(), user.Username)
+
+	if password == user.Password {
+		UserToken = &Token{}
+		UserToken.UserId = user.UserID
+		UserToken.Username = user.Username
+		fmt.Println("You are Logged in")
+	} else {
+		fmt.Println("Incorrect password!!!")
 	}
-	fmt.Println("Incorrect password!!!")
+}
+
+func (h *Handlers) Logout() {
+	UserToken = nil
 }
 
 func (h *Handlers) CreateUser() {
@@ -80,15 +95,18 @@ func (h *Handlers) GetUsers() {
 }
 
 func (h *Handlers) DeleteUser() {
-	var username string
-	fmt.Print("\nEnter Deleting username:")
-	fmt.Scanln(&username)
+	var userId string
+	fmt.Print("\nEnter Deleting User ID:")
+	fmt.Scanln(&userId)
 
-	err := h.storage.GetUserRepo().DeleteUserByUsername(ctx, username)
+	err := h.storage.GetUserRepo().DeleteUserByUsername(ctx, userId)
 
 	if err != nil {
 		log.Println("error on deleting", err)
 		return
+	}
+	if userId==UserToken.UserId.String() {
+		UserToken=nil
 	}
 	fmt.Println("Deleted")
 }
@@ -111,4 +129,24 @@ func (h *Handlers) UpdateUser() {
 		log.Println("error on updating", err)
 		return
 	}
+
+	UserToken.Username = user2.Username
+
+	fmt.Println("User updeted!!!!")
+}
+
+func (h *Handlers) GetUser() {
+
+	user, err := h.storage.GetUserRepo().GetUserByUsername(ctx, UserToken.Username)
+
+	if err != nil {
+		log.Println("Error on getting user:",err)
+		return
+	}
+
+	fmt.Println("rows |             user_id                    | username |    fullname   |            gmail               |         password      ")
+	fmt.Println("-----+----------------------------------------+----------+---------------+--------------------------------+-----------------------")
+	id := user.UserID.String()
+	fmt.Printf("%4d | %38s | %8s | %13s | %-30s | %-26s\n", 1, id, user.Username, user.Fullname, user.Gmail, user.Password)
+
 }
