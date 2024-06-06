@@ -15,6 +15,7 @@ type User struct {
 }
 
 type Todo struct {
+	UserId		uuid.UUID
 	TodoID      uuid.UUID
 	Task        string
 	CreatedAt   time.Time

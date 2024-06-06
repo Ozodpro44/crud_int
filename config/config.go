@@ -14,7 +14,7 @@ func NewConfig() Config {
 
 	cfg.DbUser = "postgres"
 	cfg.DbPassword = "postgres"
-	cfg.DbHost = "0.0.0.0"
+	cfg.DbHost = "localhost"
 	cfg.DbPort = 5432
 	cfg.DbName = "postgres"
 
