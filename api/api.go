@@ -15,18 +15,16 @@ func Api(storage storage.StorageI) {
 	for x != 0 {
 		if handlers.UserToken!= nil {
 			fmt.Println(`
-			1.CreateUser
-			2.Get ALL
-			3.Get User
-			4.Update User
-			5.Delete User
-			6.Create Todo
-			7.Get all todos
-			8.Get todo by id
-			9.Update todo
-			10.Delete todo
-			11.Log out
-			0.Exit
+				User					Todo
+		------------------------+------------------------	
+		|	1.CreateUser     	|	6.Create Todo		|
+		|	2.Get ALL			|	7.Get all todos		|
+		|	3.Get User			|	8.Get todo by id	|
+		|	4.Update User		|	9.Update todo		|
+		|	5.Delete User		|	10.Delete todo		|
+		------------------------+------------------------
+			11.Log out				0.Exit
+						
 			`)
 			fmt.Scanln(&x)
 	

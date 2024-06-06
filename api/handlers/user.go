@@ -53,12 +53,10 @@ func (h *Handlers) CreateUser() {
 	user.UserID = uuid.New()
 	fmt.Print("Enter Fullname:")
 	fmt.Scanln(&user.Fullname)
-	fmt.Print("\nEnter user name:")
+	fmt.Print("Enter user name:")
 	fmt.Scanln(&user.Username)
-	fmt.Print("Enter password:")
-	fmt.Scanln(&user.Password)
 	for {
-		fmt.Print("\nEnter Gmail:")
+		fmt.Print("Enter Gmail:")
 		fmt.Scanln(&user.Gmail)
 		check := CheckGmail(user.Gmail)
 		if check {
@@ -66,6 +64,8 @@ func (h *Handlers) CreateUser() {
 		}
 		fmt.Println("Invaid email adress (good@exmaple.com)!!!")
 	}
+	fmt.Print("Enter password:")
+	fmt.Scanln(&user.Password)
 
 	err := h.storage.GetUserRepo().CreateUser(ctx, user)
 	if err != nil {
@@ -119,8 +119,15 @@ func (h *Handlers) UpdateUser() {
 	fmt.Scanln(&user2.Username)
 	fmt.Print("enter New Fullname:")
 	fmt.Scanln(&user2.Fullname)
-	fmt.Print("enter New Gmail:")
-	fmt.Scanln(&user2.Gmail)
+	for {
+		fmt.Print("Enter Gmail:")
+		fmt.Scanln(&user2.Gmail)
+		check := CheckGmail(user2.Gmail)
+		if check {
+			break
+		}
+		fmt.Println("Invaid email adress (good@exmaple.com)!!!")
+	}
 	fmt.Print("enter New Password:")
 	fmt.Scanln(&user2.Password)
 
