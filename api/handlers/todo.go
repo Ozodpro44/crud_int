@@ -2,8 +2,10 @@ package handlers
 
 import (
 	"app/models"
+	"bufio"
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/google/uuid"
@@ -11,12 +13,14 @@ import (
 
 func (h *Handlers) CreateTodo() {
 	var todo models.Todo
+	task := bufio.NewScanner(os.Stdin)
+	fmt.Print("Enter Task:")
+	task.Scan()
+	todo.Task = task.Text()
 	todo.UserId = UserToken.UserId
 	todo.TodoID = uuid.New()
 	todo.CreatedAt = time.Now()
 	todo.IsCompleted = false
-	fmt.Print("Enter Task:")
-	fmt.Scanln(&todo.Task)
 	err := h.storage.GetTodoRepo().CreateTodo(ctx, todo, UserToken.UserId)
 
 	if err != nil {
